@@ -2,7 +2,7 @@
 
 *A Windows application for managing multiple League of Legends accounts with automatic login, account detection, and penalty tracking.*
 
-![Version](https://img.shields.io/badge/version-1.1.0-blue)
+![Version](https://img.shields.io/badge/version-1.2.0-blue)
 ![.NET](https://img.shields.io/badge/.NET-10.0-purple)
 ![Platform](https://img.shields.io/badge/platform-Windows-lightgrey)
 
@@ -10,6 +10,12 @@
 
 - 🔐 **Secure Auto-Login** - One-click login for multiple accounts
 - 🎮 **Automatic Account Detection** - Detects Riot ID from League Client logs
+- 🏷️ **Account Tagging & Organization** (NEW in v1.2)
+  - Color-coded tags (⭐ Yellow Star, 🔴 Red Circle, 🟢 Green Circle)
+  - Visual colored indicators (not black/white)
+  - Drag-and-drop reordering with enhanced visual effects
+  - Tags shown in main window and edit accounts screen
+  - Export/import support for tags
 - ⚠️ **Penalty Tracking** 
   - Low Priority Queue display (permanent tracking)
   - Queue Lockout timer with countdown
@@ -26,7 +32,7 @@
 
 ### Option 1: Download Release (Recommended for Users)
 1. Go to [Releases](../../releases)
-2. Download `SmurfAccountManager-v1.1.zip`
+2. Download `SmurfAccountManager-v1.2.zip`
 3. Extract and run `SmurfAccountManager.exe`
 4. No installation or .NET setup required!
 
@@ -95,6 +101,22 @@ dotnet publish SmurfAccountManager/SmurfAccountManager.csproj -c Release -r win-
 ```
 
 ## 📖 Version History
+
+### v1.2.0 (2025-12-01)
+- ✅ **Account Tagging System**
+  - Color-coded tags (Yellow Star, Red Circle, Green Circle)
+  - Visual colored shape indicators (gold, red, green)
+  - Tag selection menu with colored icons
+  - Tags persist in config and export/import
+- ✅ **Drag-and-Drop Reordering**
+  - Reorder accounts by dragging
+  - Enhanced visual feedback (blue glow, background change, drop shadow)
+  - Automatic display order updates
+- ✅ **UI Improvements**
+  - Tags displayed in main window (to the right of account names)
+  - Tags displayed in edit accounts window (left of account names)
+  - Proper centering for accounts without tags
+  - Reorganized edit accounts layout (edit/tag/delete buttons)
 
 ### v1.1.0 (2025-11-21)
 - ✅ Automatic account detection from League Client logs

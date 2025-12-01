@@ -2,6 +2,14 @@ using System;
 
 namespace SmurfAccountManager.Models
 {
+    public enum AccountTag
+    {
+        None,
+        YellowStar,
+        RedCircle,
+        GreenCircle
+    }
+
     public class Account
     {
         public string Id { get; set; } = Guid.NewGuid().ToString();
@@ -12,25 +20,17 @@ namespace SmurfAccountManager.Models
         public string AccountId { get; set; } = string.Empty;
         public string GameName { get; set; } = string.Empty;
         public string TagLine { get; set; } = string.Empty;
-        public DateTime? LowPrioUntil { get; set; }
-        public int LowPrioMinutes { get; set; } // Fixed number of minutes for display
-        public DateTime? LockoutUntil { get; set; }
+        
+        // Penalty tracking
+        public int? LowPriorityMinutes { get; set; } // Fixed penalty time (only counts down when queuing)
+        public DateTime? LockoutUntil { get; set; } // Expiration time (always counting down)
+        
+        // Tag for visual organization
+        public AccountTag Tag { get; set; } = AccountTag.None;
         
         public int DisplayOrder { get; set; }
 
         // Computed properties for UI display
-        public string LowPriorityQueueRemaining
-        {
-            get
-            {
-                // Show fixed minutes if penalty is still active
-                if (LowPrioMinutes > 0 && LowPrioUntil.HasValue && LowPrioUntil.Value > DateTime.Now)
-                    return $"{LowPrioMinutes} minutes";
-                else
-                    return string.Empty;
-            }
-        }
-
         public string QueueLockoutRemaining
         {
             get

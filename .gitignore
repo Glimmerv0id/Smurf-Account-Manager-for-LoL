@@ -1,29 +1,25 @@
-## Build results
-[Dd]ebug/
-[Rr]elease/
+###############################################################################
+# .NET & Visual Studio
+###############################################################################
+
+# Build outputs
 bin/
 obj/
-[Bb]in/
-[Oo]bj/
 
-## Visual Studio cache/options
+# Visual Studio cache/options
 .vs/
 *.suo
 *.user
 *.userosscache
 *.sln.docstates
+
+# User-specific files
 *.userprefs
 
-## Build results specific
-*.dll
-*.exe
-*.pdb
-*.cache
+###############################################################################
+# NuGet
+###############################################################################
 
-## Compiled release folder (too large for GitHub - distribute via Releases)
-SmurfAccountManager_v1.1/
-
-## NuGet
 *.nupkg
 **/packages/*
 *.nuget.props
@@ -32,42 +28,34 @@ project.lock.json
 project.fragment.lock.json
 artifacts/
 
-## Test/Debug files (can be removed)
-*.bat
-*.md
-!README.md
-!LICENSE.md
-TestPenaltyRegex.cs
-1.0 specs.txt
-1.0 UI sketch.png
-1.1 specs.txt
-*.png
-CURRENT_DETECTION_LOGIC.md
-DEBUG_CHECK.bat
-FINAL_SOLUTION.md
-FIND_PENALTY.bat
-FIX_COMPLETED.md
-LOG_READING_IMPROVEMENTS.md
-PENALTY_DETECTION_WORKFLOW.md
-RUN_LOG_TEST.bat
-SMART_DETECTION_IMPLEMENTED.md
-TEST_*.bat
-TEST_*.md
-CHECK_*.bat
-VERSION_1.1_CHANGES.md
+###############################################################################
+# Release builds (distribute via GitHub Releases)
+###############################################################################
 
-## IDE files
+*.zip
+*_v*/
+
+###############################################################################
+# IDE
+###############################################################################
+
+# Visual Studio Code
 .vscode/
+
+# JetBrains Rider
 .idea/
 
-## OS generated files
+###############################################################################
+# OS
+###############################################################################
+
+# macOS
 .DS_Store
 .DS_Store?
 ._*
 .Spotlight-V100
 .Trashes
+
+# Windows
 ehthumbs.db
 Thumbs.db
-
-## User config files (may contain sensitive paths)
-config.json

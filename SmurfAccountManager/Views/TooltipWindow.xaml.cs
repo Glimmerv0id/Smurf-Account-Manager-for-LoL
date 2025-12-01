@@ -39,11 +39,10 @@ namespace SmurfAccountManager.Views
                 QueueLockoutText.Visibility = Visibility.Collapsed;
             }
 
-            // 1.1 Spec: Show low priority queue remaining time
-            var lowPriority = account.LowPriorityQueueRemaining;
-            if (!string.IsNullOrEmpty(lowPriority))
+            // 1.1 Spec: Show low priority queue minutes
+            if (account.LowPriorityMinutes.HasValue && account.LowPriorityMinutes.Value > 0)
             {
-                LowPriorityText.Text = $"low priority queue: {lowPriority}";
+                LowPriorityText.Text = $"low priority queue: {account.LowPriorityMinutes.Value} minutes";
                 LowPriorityText.Visibility = Visibility.Visible;
             }
             else

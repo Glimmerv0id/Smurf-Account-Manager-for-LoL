@@ -56,7 +56,7 @@ namespace SmurfAccountManager.Views
                 AccountId = _originalAccount?.AccountId ?? string.Empty,
                 GameName = _originalAccount?.GameName ?? string.Empty,
                 TagLine = _originalAccount?.TagLine ?? string.Empty,
-                LowPrioUntil = _originalAccount?.LowPrioUntil,
+                LowPriorityMinutes = _originalAccount?.LowPriorityMinutes,
                 LockoutUntil = _originalAccount?.LockoutUntil,
                 DisplayOrder = _displayOrder
             };

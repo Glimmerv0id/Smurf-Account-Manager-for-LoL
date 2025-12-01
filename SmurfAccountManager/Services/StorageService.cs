@@ -13,6 +13,12 @@ namespace SmurfAccountManager.Services
             "config.json"
         );
 
+        private static readonly string BackupPath = ConfigPath + ".backup";
+        private static readonly string TempPath = ConfigPath + ".tmp";
+
+        /// <summary>
+        /// Loads configuration from disk, with automatic backup recovery on failure
+        /// </summary>
         public static AppConfig LoadConfig()
         {
             try
@@ -20,17 +26,58 @@ namespace SmurfAccountManager.Services
                 if (File.Exists(ConfigPath))
                 {
                     var json = File.ReadAllText(ConfigPath);
-                    return JsonConvert.DeserializeObject<AppConfig>(json) ?? new AppConfig();
+                    var config = JsonConvert.DeserializeObject<AppConfig>(json);
+                    
+                    if (config != null)
+                        return config;
                 }
             }
-            catch
+            catch (JsonException jsonEx)
             {
-                // If loading fails, return new config
+                // Config file is corrupted - try to load from backup
+                System.Diagnostics.Debug.WriteLine($"[StorageService] Config corrupted: {jsonEx.Message}");
+                
+                if (File.Exists(BackupPath))
+                {
+                    try
+                    {
+                        System.Diagnostics.Debug.WriteLine("[StorageService] Attempting to load from backup...");
+                        var json = File.ReadAllText(BackupPath);
+                        var config = JsonConvert.DeserializeObject<AppConfig>(json);
+                        
+                        if (config != null)
+                        {
+                            // Successfully loaded from backup!
+                            System.Diagnostics.Debug.WriteLine("[StorageService] Backup loaded successfully, restoring...");
+                            
+                            // Move corrupted config out of the way
+                            var corruptedPath = ConfigPath + $".corrupted_{DateTime.Now:yyyyMMddHHmmss}";
+                            File.Move(ConfigPath, corruptedPath);
+                            
+                            // Save the backup as the new main config
+                            SaveConfig(config);
+                            
+                            return config;
+                        }
+                    }
+                    catch (Exception backupEx)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"[StorageService] Backup also failed: {backupEx.Message}");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"[StorageService] Load failed: {ex.Message}");
             }
 
+            // If all else fails, return new config
             return new AppConfig();
         }
 
+        /// <summary>
+        /// Saves configuration to disk with automatic backup and atomic write
+        /// </summary>
         public static void SaveConfig(AppConfig config)
         {
             try
@@ -41,12 +88,36 @@ namespace SmurfAccountManager.Services
                     Directory.CreateDirectory(directory);
                 }
 
+                // Backup existing config before overwriting
+                if (File.Exists(ConfigPath))
+                {
+                    File.Copy(ConfigPath, BackupPath, overwrite: true);
+                }
+
+                // Serialize config
                 var json = JsonConvert.SerializeObject(config, Formatting.Indented);
-                File.WriteAllText(ConfigPath, json);
+                
+                // Write to temporary file first
+                File.WriteAllText(TempPath, json);
+                
+                // Then atomically replace the main config file
+                // This ensures we never end up with a half-written config
+                File.Move(TempPath, ConfigPath, overwrite: true);
             }
-            catch
+            catch (Exception ex)
             {
-                // Ignore save errors
+                System.Diagnostics.Debug.WriteLine($"[StorageService] Save failed: {ex.Message}");
+                
+                // Clean up temp file if it exists
+                try
+                {
+                    if (File.Exists(TempPath))
+                        File.Delete(TempPath);
+                }
+                catch
+                {
+                    // Ignore cleanup errors
+                }
             }
         }
     }
